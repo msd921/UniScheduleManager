@@ -1,0 +1,13 @@
+.table-item-button {
+    padding-bottom: 4px;
+}
+.table-item-link {
+    text-decoration: none;
+    color: #000;
+}
+.table-item-link:hover {
+    color: #2b569a;
+}
+.row-table-edit {
+    margin-top: 30px;
+}
