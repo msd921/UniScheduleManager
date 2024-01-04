@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="../styles.css" />
+    <title>Home</title>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light nav-menu">
+        <div class="container">
+            <a class="navbar-brand nav-brand" href="../home">University</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="../home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../course/">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../student/">Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../teacher/">Teachers</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="">Groups</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="../schedule/">Schedule</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<main>
+    <div class="container">
+        <table class="table table-striped">
+            <caption>Groups table</caption>
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Title</th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="group : ${groups}">
+                <td><a class="table-item table-item-link" th:href="@{groups-edit(id=${group.id})}" th:text="${group.id}">1</a></td>
+                <td><a class="table-item table-item-link" th:href="@{groups-edit(id=${group.id})}" th:text="${group.name}">CD-1</a></td>
+                <td><a class="table-item table-item-link" th:href="@{groups-schedule(id=${group.id})}">Schedule</a></td>
+                <td>
+                    <form method="POST" th:action="@{delete}" >
+                        <input type="hidden" name="id" th:value="${group.id}" >
+                        <button type="submit" class="table-item table-item-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                            </svg>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <a type="button" class="btn btn-success" href="create">New</a>
+    </div>
+</main>
+</body>
+</html>

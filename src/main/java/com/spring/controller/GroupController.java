@@ -2,6 +2,7 @@ package com.spring.controller;
 
 import com.spring.dto.CourseDto;
 import com.spring.dto.GroupDto;
+import com.spring.dto.ScheduleDto;
 import com.spring.service.GroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -62,7 +64,11 @@ public class GroupController {
 
     @GetMapping("/groups-schedule")
     public String showSchedule(@RequestParam("id") int groupId, Model model) {
-        model.addAttribute("schedules", groupService.getSchedule(groupId));
+        List<ScheduleDto> schedules = groupService.getSchedule(groupId);
+        if(schedules.isEmpty()){
+            return "redirect:/error-page?errorMessage=Group+schedule+not+exist!";
+        }
+        model.addAttribute("schedules", schedules);
         return "group/groups-schedule";
     }
 
