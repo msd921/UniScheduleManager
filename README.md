@@ -16,11 +16,18 @@ The UniScheduleManager provides CRUD (Create, Read, Update, Delete) operations f
 
 
 ## How to run
+1.
 ```
 git clone https://github.com/msd921/UniScheduleManager.git
 cd UniScheduleManager
 ./mvnw spring-boot:run
 ```
+
+2.For PostgreSQL 10 and above, execute the SQL script AddTableScript.sql located in src/main/resources/sql to create the necessary tables.
+
+3.Open application.yml and provide your database configuration details.
+
+4.Once the application is running, navigate to http://localhost:8080 in your web browser.
 
 ## Project Structure
 The project follows a structured organization with clear separation of concerns between controllers, services, and repositories.
