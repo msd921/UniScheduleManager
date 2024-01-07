@@ -1,9 +1,13 @@
 package com.spring.config;
 
 import com.spring.dto.GroupDto;
+import com.spring.dto.ScheduleDto;
 import com.spring.dto.StudentDto;
+import com.spring.dto.TeacherDto;
 import com.spring.model.Group;
+import com.spring.model.Schedule;
 import com.spring.model.Student;
+import com.spring.model.Teacher;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -44,6 +48,7 @@ public class SpringConfig implements WebMvcConfigurer {
 
         modelMapper.createTypeMap(Group.class, GroupDto.class)
                 .addMapping(Group::getStudents, GroupDto::setStudents);
+
 
         return modelMapper;
     }

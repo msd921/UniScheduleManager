@@ -35,7 +35,7 @@ public class CourseService {
 
     public CourseDto findById(int id) {
         Course course = courseJdbcDao.findById(id);
-        course.setGroups(courseJdbcDao.getGroupsInCourse(id));
+        //course.setGroups(courseJdbcDao.getGroupsInCourse(id));
         return courseConverter.toDto(course);
     }
 

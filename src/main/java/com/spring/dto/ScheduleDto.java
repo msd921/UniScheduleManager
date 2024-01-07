@@ -20,11 +20,7 @@ public class ScheduleDto {
     @DateTimeFormat(pattern = "dd.MM.yyyy HH:mm")
     private LocalDateTime date;
 
-
-
     private Group group;
-
-    private Teacher teacher;
 
     private Course course;
 }

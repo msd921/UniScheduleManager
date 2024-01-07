@@ -58,7 +58,7 @@
             <tbody>
             <tr th:each="schedule : ${schedules}">
                 <td><a class="table-item table-item-link" th:href="@{../schedule/schedule-edit(id=${schedule.id})}" th:text="${schedule.id}">1</a></td>
-                <td><a class="table-item table-item-link" th:href="@{../teacher/teacher-edit(id=${schedule.teacher.id})}" th:text="${schedule.teacher.name + ' ' + schedule.teacher.surname}">Dorian Field</a></td>
+                <td><a class="table-item table-item-link" th:href="@{../teacher/teacher-edit(id=${schedule.course.teacher.id})}" th:text="${schedule.course.teacher.name + ' ' + schedule.course.teacher.surname}">Dorian Field</a></td>
                 <td><a class="table-item table-item-link" th:href="@{../course/courses-edit(id=${schedule.course.id})}" th:text="${schedule.course.name}">Mathematics</a></td>
                 <td><a class="table-item table-item-link" th:href="@{../schedule/schedule-edit(id=${schedule.id})}" th:text="${#temporals.format(schedule.date, 'dd.MM.yyyy HH:mm')}">08.03.2023 10:00</a></td>
             </tr>

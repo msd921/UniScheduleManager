@@ -1,6 +1,5 @@
 package com.spring.dao;
 
-import com.spring.mapper.ScheduleRowMapper;
 import com.spring.model.Schedule;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,44 +12,26 @@ import java.util.List;
 public class ScheduleJdbcDao {
 
     private final JdbcTemplate jdbcTemplate;
+    private final ScheduleRepository scheduleRepository;
 
     public List<Schedule> getAll() {
-        String sql = "SELECT s.id AS schedule_id, s.date, " +
-                "g.id AS group_id, g.name AS group_name, " +
-                "t.id AS teacher_id, t.name AS teacher_name, t.surname AS teacher_surname, " +
-                "c.id AS course_id, c.name AS course_name, c.description AS course_description " +
-                "FROM schedules s " +
-                "LEFT JOIN groups g ON s.group_id = g.id " +
-                "LEFT JOIN courses c ON s.course_id = c.id " +
-                "LEFT JOIN teachers t ON c.teacher_id = t.id";
-
-        return jdbcTemplate.query(sql, new ScheduleRowMapper());
+        return scheduleRepository.findAll();
     }
 
     public void save(Schedule schedule) {
-        jdbcTemplate.update("INSERT INTO schedules(date,course_id,group_id) VALUES(?,?,?) ", schedule.getDate(), schedule.getCourse().getId(), schedule.getGroup().getId());
+        scheduleRepository.save(schedule);
     }
 
     public void update(Schedule schedule) {
-        jdbcTemplate.update("UPDATE schedules SET date = ?, course_id = ?, group_id = ? WHERE id = ?", schedule.getDate(), schedule.getCourse().getId(), schedule.getGroup().getId(), schedule.getId());
+        scheduleRepository.save(schedule);
     }
 
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM schedules WHERE id = ?", id);
+        scheduleRepository.deleteById(id);
     }
 
     public Schedule findById(int id) {
-        String sql = "SELECT s.id AS schedule_id, s.date, " +
-                "g.id AS group_id, g.name AS group_name, " +
-                "t.id AS teacher_id, t.name AS teacher_name, t.surname AS teacher_surname, " +
-                "c.id AS course_id, c.name AS course_name, c.description AS course_description " +
-                "FROM schedules s " +
-                "LEFT JOIN groups g ON s.group_id = g.id " +
-                "LEFT JOIN courses c ON s.course_id = c.id " +
-                "LEFT JOIN teachers t ON c.teacher_id = t.id WHERE s.id = ?";
-
-        return jdbcTemplate.query(sql, new Object[]{id}, new ScheduleRowMapper())
-                .stream().findAny().orElse(new Schedule());
+        return scheduleRepository.findById(id).orElse(null);
     }
 
     public boolean courseGroupExists(int courseId, int groupId) {

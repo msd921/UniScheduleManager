@@ -2,6 +2,7 @@ package com.spring.service;
 
 import com.spring.converter.ScheduleConverter;
 import com.spring.converter.TeacherConverter;
+import com.spring.dao.ScheduleJdbcDao;
 import com.spring.dao.TeacherJdbcDao;
 import com.spring.dto.ScheduleDto;
 import com.spring.dto.TeacherDto;
@@ -18,6 +19,7 @@ public class TeacherService {
 
     private final TeacherJdbcDao teacherJdbcDao;
     private final TeacherConverter teacherConverter;
+    private final ScheduleJdbcDao scheduleJdbcDao;
     private final ScheduleConverter scheduleConverter;
 
     public List<TeacherDto> getAll() {

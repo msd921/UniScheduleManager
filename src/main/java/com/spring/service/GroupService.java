@@ -41,8 +41,8 @@ public class GroupService {
 
     public GroupDto findById(int id) {
         Group group = groupJdbcDao.findById(id);
-        group.setStudents(groupJdbcDao.getStudentsInGroup(id));
-        group.setCourses(groupJdbcDao.getCoursesForGroup(id));
+        //group.setStudents(groupJdbcDao.getStudentsInGroup(id));
+        //group.setCourses(groupJdbcDao.getCoursesForGroup(id));
         return groupConverter.toDto(group);
     }
 
@@ -52,9 +52,10 @@ public class GroupService {
     }
 
     public List<ScheduleDto> getSchedule(int groupId) {
-        return groupJdbcDao.getScheduleForGroup(groupId).stream()
+        List<ScheduleDto> scheduleDtoList = groupJdbcDao.findScheduleByGroupId(groupId).stream()
                 .map(scheduleConverter::toDto)
                 .collect(Collectors.toList());
+        return scheduleDtoList;
     }
 
     public void addCourse(int courseId, int groupId){

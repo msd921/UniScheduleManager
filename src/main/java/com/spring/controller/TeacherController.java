@@ -1,5 +1,6 @@
 package com.spring.controller;
 
+import com.spring.dto.ScheduleDto;
 import com.spring.dto.TeacherDto;
 import com.spring.service.TeacherService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -62,7 +64,11 @@ public class TeacherController {
 
     @GetMapping("/teacher-schedule")
     public String showSchedule(@RequestParam("id") int teacherId, Model model) {
-        model.addAttribute("schedules", teacherService.getSchedule(teacherId));
+        List<ScheduleDto> schedules = teacherService.getSchedule(teacherId);
+        if(schedules.isEmpty()){
+            return "redirect:/error-page?errorMessage=Teacher+schedule+not+exist!";
+        }
+        model.addAttribute("schedules", schedules);
         return "teacher/teacher-schedule";
     }
 
