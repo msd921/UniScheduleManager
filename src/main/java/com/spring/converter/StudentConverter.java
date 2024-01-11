@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+
 @Service
 @RequiredArgsConstructor
 public class StudentConverter {
@@ -22,4 +24,15 @@ public class StudentConverter {
         return modelMapper.map(studentDto, Student.class);
     }
 
+
+    @PostConstruct
+    public void runAfterObjectCreated(){
+        modelMapper.createTypeMap(Student.class, StudentDto.class)
+                .addMapping(src -> src.getGroup().getName(), StudentDto::setGroupName)
+                .addMapping(src -> src.getGroup().getId(), StudentDto::setGroupId);
+
+        modelMapper.createTypeMap(StudentDto.class, Student.class)
+                .addMapping(StudentDto::getGroupName, (dest, value) -> dest.getGroup().setName((String) value))
+                .addMapping(StudentDto::getGroupId, (dest, value) -> dest.getGroup().setId((Integer) value));
+    }
 }

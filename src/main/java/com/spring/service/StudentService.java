@@ -1,8 +1,8 @@
 package com.spring.service;
 
 import com.spring.converter.StudentConverter;
-import com.spring.dao.GroupJdbcDao;
-import com.spring.dao.StudentJdbcDao;
+import com.spring.dao.GroupRepository;
+import com.spring.dao.StudentRepository;
 import com.spring.dto.StudentDto;
 import com.spring.model.Student;
 import lombok.RequiredArgsConstructor;
@@ -15,37 +15,37 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StudentService {
 
-    private final StudentJdbcDao studentJdbcDao;
+    private final StudentRepository studentRepository;
 
-    private final GroupJdbcDao groupJdbcDao;
+    private final GroupRepository groupRepository;
 
     private final StudentConverter studentConverter;
 
     public List<StudentDto> getAll() {
-        return studentJdbcDao.getAll().stream()
+        return studentRepository.findAll().stream()
                 .map(studentConverter::toDto)
                 .collect(Collectors.toList());
     }
 
     public void create(StudentDto studentDto) {
         Student student = studentConverter.toEntity(studentDto);
-        student.setGroup(groupJdbcDao.findByName(studentDto.getGroupName()));
-        studentJdbcDao.save(student);
+        student.setGroup(groupRepository.findByName(studentDto.getGroupName()));
+        studentRepository.save(student);
     }
 
     public void delete(int id) {
-        studentJdbcDao.delete(id);
+        studentRepository.deleteById(id);
     }
 
     public StudentDto findById(int id) {
-        Student student = studentJdbcDao.findById(id);
+        Student student = studentRepository.findById(id).orElse(null);
         return studentConverter.toDto(student);
     }
 
     public void edit(StudentDto studentDto) {
         Student student = studentConverter.toEntity(studentDto);
-        student.setGroup(groupJdbcDao.findByName(studentDto.getGroupName()));
-        studentJdbcDao.update(student);
+        student.setGroup(groupRepository.findByName(studentDto.getGroupName()));
+        studentRepository.save(student);
     }
 
 

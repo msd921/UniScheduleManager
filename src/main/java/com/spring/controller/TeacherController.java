@@ -65,9 +65,6 @@ public class TeacherController {
     @GetMapping("/teacher-schedule")
     public String showSchedule(@RequestParam("id") int teacherId, Model model) {
         List<ScheduleDto> schedules = teacherService.getSchedule(teacherId);
-        if(schedules.isEmpty()){
-            return "redirect:/error-page?errorMessage=Teacher+schedule+not+exist!";
-        }
         model.addAttribute("schedules", schedules);
         return "teacher/teacher-schedule";
     }

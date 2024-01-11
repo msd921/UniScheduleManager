@@ -1,7 +1,7 @@
 package com.spring.service;
 
 import com.spring.converter.CourseConverter;
-import com.spring.dao.CourseJdbcDao;
+import com.spring.dao.CourseRepository;
 import com.spring.dto.CourseDto;
 import com.spring.model.Course;
 import lombok.RequiredArgsConstructor;
@@ -14,33 +14,32 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CourseService {
 
-    private final CourseJdbcDao courseJdbcDao;
+    private final CourseRepository courseRepository;
 
     private final CourseConverter courseConverter;
 
     public List<CourseDto> getAll() {
-        return courseJdbcDao.getAll().stream()
+        return courseRepository.findAll().stream()
                 .map(courseConverter::toDto)
                 .collect(Collectors.toList());
     }
 
     public void create(CourseDto courseDto) {
         Course course = courseConverter.toEntity(courseDto);
-        courseJdbcDao.save(course);
+        courseRepository.save(course);
     }
 
     public void delete(int id) {
-        courseJdbcDao.delete(id);
+        courseRepository.deleteById(id);
     }
 
     public CourseDto findById(int id) {
-        Course course = courseJdbcDao.findById(id);
-        //course.setGroups(courseJdbcDao.getGroupsInCourse(id));
+        Course course = courseRepository.findById(id).orElse(null);
         return courseConverter.toDto(course);
     }
 
     public void edit(CourseDto courseDto) {
         Course course = courseConverter.toEntity(courseDto);
-        courseJdbcDao.update(course);
+        courseRepository.save(course);
     }
 }

@@ -2,8 +2,7 @@ package com.spring.service;
 
 import com.spring.converter.ScheduleConverter;
 import com.spring.converter.TeacherConverter;
-import com.spring.dao.ScheduleJdbcDao;
-import com.spring.dao.TeacherJdbcDao;
+import com.spring.dao.TeacherRepository;
 import com.spring.dto.ScheduleDto;
 import com.spring.dto.TeacherDto;
 import com.spring.model.Teacher;
@@ -17,39 +16,42 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TeacherService {
 
-    private final TeacherJdbcDao teacherJdbcDao;
+    private final TeacherRepository teacherRepository;
     private final TeacherConverter teacherConverter;
-    private final ScheduleJdbcDao scheduleJdbcDao;
     private final ScheduleConverter scheduleConverter;
 
     public List<TeacherDto> getAll() {
-        return teacherJdbcDao.getAll().stream()
+        return teacherRepository.findAll().stream()
                 .map(teacherConverter::toDto)
                 .collect(Collectors.toList());
     }
 
     public void create(TeacherDto teacherDto) {
         Teacher teacher = teacherConverter.toEntity(teacherDto);
-        teacherJdbcDao.save(teacher);
+        teacherRepository.save(teacher);
     }
 
     public void delete(int id) {
-        teacherJdbcDao.delete(id);
+        teacherRepository.deleteById(id);
     }
 
     public TeacherDto findById(int id) {
-        Teacher teacher = teacherJdbcDao.findById(id);
+        Teacher teacher = teacherRepository.findById(id).orElse(null);
         return teacherConverter.toDto(teacher);
     }
 
     public void edit(TeacherDto teacherDto) {
         Teacher teacher = teacherConverter.toEntity(teacherDto);
-        teacherJdbcDao.update(teacher);
+        teacherRepository.save(teacher);
     }
 
     public List<ScheduleDto> getSchedule(int teacherId) {
-        return teacherJdbcDao.getScheduleByTeacherId(teacherId).stream()
+        List<ScheduleDto> schedules = teacherRepository.findSchedulesByTeacherId(teacherId).stream()
                 .map(scheduleConverter::toDto)
                 .collect(Collectors.toList());
+        if(schedules.isEmpty()){
+            throw new RuntimeException("Schedules is empty");
+        }
+        return schedules;
     }
 }

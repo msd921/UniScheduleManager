@@ -1,7 +1,7 @@
 package com.spring.service;
 
 import com.spring.converter.ScheduleConverter;
-import com.spring.dao.ScheduleJdbcDao;
+import com.spring.dao.ScheduleRepository;
 import com.spring.dto.ScheduleDto;
 import com.spring.model.Schedule;
 import lombok.RequiredArgsConstructor;
@@ -14,36 +14,36 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ScheduleService {
 
-    private final ScheduleJdbcDao scheduleJdbcDao;
+    private final ScheduleRepository scheduleRepository;
 
     private final ScheduleConverter scheduleConverter;
 
     public List<ScheduleDto> getAll() {
-        return scheduleJdbcDao.getAll().stream()
+        return scheduleRepository.findAll().stream()
                 .map(scheduleConverter::toDto)
                 .collect(Collectors.toList());
     }
 
     public void create(ScheduleDto scheduleDto) {
         Schedule schedule = scheduleConverter.toEntity(scheduleDto);
-        if (scheduleJdbcDao.courseGroupExists(schedule.getCourse().getId(), schedule.getGroup().getId()) && scheduleJdbcDao.isScheduleTimeCorrectForCreate(schedule)) {
-            scheduleJdbcDao.save(schedule);
+        if (scheduleRepository.courseGroupExists(schedule.getCourse().getId(), schedule.getGroup().getId())) {
+            scheduleRepository.save(schedule);
         }
     }
 
     public void delete(int id) {
-        scheduleJdbcDao.delete(id);
+        scheduleRepository.deleteById(id);
     }
 
     public void edit(ScheduleDto scheduleDto) {
         Schedule schedule = scheduleConverter.toEntity(scheduleDto);
-        if (scheduleJdbcDao.isScheduleTimeCorrectForEdit(schedule)) {
-            scheduleJdbcDao.update(schedule);
+        if (scheduleRepository.courseGroupExists(schedule.getCourse().getId(), schedule.getGroup().getId())) {
+            scheduleRepository.save(schedule);
         }
     }
 
     public ScheduleDto findById(int id) {
-        Schedule schedule = scheduleJdbcDao.findById(id);
+        Schedule schedule = scheduleRepository.findById(id).orElse(null);
         return scheduleConverter.toDto(schedule);
     }
 }
